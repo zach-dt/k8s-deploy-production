@@ -9,13 +9,21 @@ spec:
   - sockshop-gateway
   http:
   - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: front-end.production.svc.cluster.local
+  - match:
     - authority:
         prefix: "carts"
     route:
     - destination:
         port:
           number: 80
-        host: carts.production
+        host: carts.production.svc.cluster.local
   - match:
     - authority:
         prefix: "catalogue"
@@ -23,7 +31,23 @@ spec:
     - destination:
         port:
           number: 80
-        host: catalogue.production
+        host: catalogue.production.svc.cluster.local
+  - match:
+    - authority:
+        prefix: "user"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: user.production.svc.cluster.local
+  - match:
+    - authority:
+        prefix: "user-db-svc"
+    route:
+    - destination:
+        port:
+          number: 27017
+        host: user-db-svc.production.svc.cluster.local
   - match:
     - authority:
         prefix: "orders"
@@ -31,15 +55,7 @@ spec:
     - destination:
         port:
           number: 80
-        host: orders.production
-  - match:
-    - authority:
-        prefix: "payment"
-    route:
-    - destination:
-        port:
-          number: 80
-        host: payment.production
+        host: orders.production.svc.cluster.local
   - match:
     - authority:
         prefix: "queue-master"
@@ -47,7 +63,7 @@ spec:
     - destination:
         port:
           number: 80
-        host: queue-master.production
+        host: queue-master.production.svc.cluster.local
   - match:
     - authority:
         prefix: "shipping"
@@ -55,20 +71,12 @@ spec:
     - destination:
         port:
           number: 80
-        host: shipping.production
+        host: shipping.production.svc.cluster.local
   - match:
     - authority:
-        prefix:  "user"
+        prefix: "rabbitmq"
     route:
     - destination:
         port:
-          number: 80
-        host: user.production
-  - match:
-    - uri:
-        prefix: "/"
-    route:
-    - destination:
-        port:
-          number: 8079
-        host: front-end.production
+          number: 5672
+        host: rabbitmq.production.svc.cluster.local
