@@ -11,4 +11,15 @@ spec:
   - route:
     - destination:
         host: front-end.production.svc.cluster.local
-    
+        subset: v2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: front-end-destination
+spec:
+  host: front-end.production.svc.cluster.local
+  subsets:
+  - name: v2
+    labels:
+      version: v2

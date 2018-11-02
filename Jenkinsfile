@@ -23,7 +23,7 @@ pipeline {
         }
       }
     }
-    /*stage('DT Deploy Event') {
+    stage('DT Deploy Event') {
       steps {
         createDynatraceDeploymentEvent(
           envId: 'Dynatrace Tenant',
@@ -33,13 +33,111 @@ pipeline {
                 [meType: 'SERVICE']
               ],
               tags: [
-                [context: 'CONTEXTLESS', key: 'app', value: "${env.APP_NAME}"],
+                [context: 'CONTEXTLESS', key: 'app', value: "carts"],
+                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+              ]
+            ]
+          ]) {
+        }
+        createDynatraceDeploymentEvent(
+          envId: 'Dynatrace Tenant',
+          tagMatchRules: [
+            [
+              meTypes: [
+                [meType: 'SERVICE']
+              ],
+              tags: [
+                [context: 'CONTEXTLESS', key: 'app', value: "catalogue"],
+                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+              ]
+            ]
+          ]) {
+        }
+        createDynatraceDeploymentEvent(
+          envId: 'Dynatrace Tenant',
+          tagMatchRules: [
+            [
+              meTypes: [
+                [meType: 'SERVICE']
+              ],
+              tags: [
+                [context: 'CONTEXTLESS', key: 'app', value: "front-end"],
+                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+              ]
+            ]
+          ]) {
+        }
+        createDynatraceDeploymentEvent(
+          envId: 'Dynatrace Tenant',
+          tagMatchRules: [
+            [
+              meTypes: [
+                [meType: 'SERVICE']
+              ],
+              tags: [
+                [context: 'CONTEXTLESS', key: 'app', value: "orders"],
+                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+              ]
+            ]
+          ]) {
+        }
+        createDynatraceDeploymentEvent(
+          envId: 'Dynatrace Tenant',
+          tagMatchRules: [
+            [
+              meTypes: [
+                [meType: 'SERVICE']
+              ],
+              tags: [
+                [context: 'CONTEXTLESS', key: 'app', value: "payment"],
+                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+              ]
+            ]
+          ]) {
+        }
+        createDynatraceDeploymentEvent(
+          envId: 'Dynatrace Tenant',
+          tagMatchRules: [
+            [
+              meTypes: [
+                [meType: 'SERVICE']
+              ],
+              tags: [
+                [context: 'CONTEXTLESS', key: 'app', value: "queue-master"],
+                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+              ]
+            ]
+          ]) {
+        }
+        createDynatraceDeploymentEvent(
+          envId: 'Dynatrace Tenant',
+          tagMatchRules: [
+            [
+              meTypes: [
+                [meType: 'SERVICE']
+              ],
+              tags: [
+                [context: 'CONTEXTLESS', key: 'app', value: "shipping"],
+                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+              ]
+            ]
+          ]) {
+        }
+        createDynatraceDeploymentEvent(
+          envId: 'Dynatrace Tenant',
+          tagMatchRules: [
+            [
+              meTypes: [
+                [meType: 'SERVICE']
+              ],
+              tags: [
+                [context: 'CONTEXTLESS', key: 'app', value: "user"],
                 [context: 'CONTEXTLESS', key: 'environment', value: 'production']
               ]
             ]
           ]) {
         }
       }
-    }*/
+    }
   }
 }

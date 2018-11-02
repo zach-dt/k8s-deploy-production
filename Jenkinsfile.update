@@ -1,0 +1,75 @@
+pipeline {
+    parameters {
+        string(name: 'SERVICE', description: 'The name of the service that should be updated', trim: true)
+        string(name: 'VERSION', description: 'The version of the deployment', trim: true)
+    }
+    agent {
+        label 'kubegit'
+    }
+    stages {
+        stage('Checkout project') {
+            when {
+                beforeAgent true
+                expression {
+                    return (env.SERVICE != "" && env.VERSION != "")
+                }
+            }
+            steps {
+                container('git') {
+                    sh "git clone https://github.com/dirkstarorg/k8s-deploy-production ."
+                }
+            }
+        }
+        stage('Update yml files') {
+            when {
+                beforeAgent true
+                expression {
+                    return (env.SERVICE != "" && env.VERSION != "")
+                }
+            }
+            steps {
+                container('kubectl') {
+                    sh "cp ${env.SERVICE}.yml ${env.SERVICE}-${env.VERSION}.yml"
+                    // update images
+                    sh "sed -i \"s#image: .*#image: `kubectl -n staging get deployment -o jsonpath='{.items[*].spec.template.spec.containers[0].image}' --field-selector=metadata.name=${env.SERVICE}`#\" ${env.SERVICE}-${env.VERSION}.yml"
+                    // update version
+                    sh "sed -i \"s#  version: v1#  version: $VERSION#\" ${env.SERVICE}-${env.VERSION}.yml"
+                    // update name
+                    sh "sed -i \"s#  name: ${env.SERVICE}-v1#  name: ${env.SERVICE}-${env.VERSION}#\" ${env.SERVICE}-${env.VERSION}.yml"
+                }
+            }
+        }
+        stage('Deploy updated yml') {
+            when {
+                beforeAgent true
+                expression {
+                    return (env.SERVICE != "" && env.VERSION != "")
+                }
+            }
+            steps {
+                container('kubectl') {
+                    sh "cat ${env.SERVICE}-${env.VERSION}.yml"
+                    sh "kubectl apply -f ${env.SERVICE}-${env.VERSION}.yml"
+                }
+            }
+        }
+        stage('DT Deploy Event') {
+            steps {
+                createDynatraceDeploymentEvent(
+                envId: 'Dynatrace Tenant',
+                tagMatchRules: [
+                    [
+                    meTypes: [
+                        [meType: 'SERVICE']
+                    ],
+                    tags: [
+                        [context: 'CONTEXTLESS', key: 'app', value: "${env.SERVICE}"],
+                        [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+                    ]
+                    ]
+                ]) {
+                }
+            }
+        }
+    }
+}
