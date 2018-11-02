@@ -13,27 +13,7 @@ spec:
         prefix: "/carts"
     route:
     - destination:
-        port:
-          number: 80
         host: carts.production.svc.cluster.local
-  - match:
-    - uri:
-        prefix: "/"
-    route:
+  - route:
     - destination:
-        port:
-          number: 8080
         host: front-end.production.svc.cluster.local
-        subset: v2
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: front-end-destination
-spec:
-  host: front-end.production.svc.cluster.local
-  subsets:
-  - name: v2
-    labels:
-      version: v2
-  
