@@ -1,0 +1,129 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: dynatrace-oneagent-hostnames
+spec:
+  hosts:
+  - dhn62753.live.dynatrace.com
+  - sg-us-west-2-54-191-195-87-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-69-116-21-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-35-155-216-1-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-213-205-48-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-34-211-171-253-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-213-211-21-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-186-88-199-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-34-223-233-242-prod-us-west-2-oregon.live.ruxit.com
+  location: MESH_EXTERNAL
+  ports:
+  - number: 443
+    name: HTTPS
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dynatrace-oneagent-hostnames
+spec:
+  hosts:
+  - dhn62753.live.dynatrace.com
+  - sg-us-west-2-54-191-195-87-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-69-116-21-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-35-155-216-1-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-213-205-48-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-34-211-171-253-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-213-211-21-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-54-186-88-199-prod-us-west-2-oregon.live.ruxit.com
+  - sg-us-west-2-34-223-233-242-prod-us-west-2-oregon.live.ruxit.com
+  tls:
+  - match:
+    - port: 443
+      sni_hosts:
+      - dhn62753.live.dynatrace.com
+    route:
+    - destination:
+        host: dhn62753.live.dynatrace.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-54-191-195-87-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-54-191-195-87-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-54-69-116-21-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-54-69-116-21-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-35-155-216-1-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-35-155-216-1-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-54-213-205-48-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-54-213-205-48-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-34-211-171-253-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-34-211-171-253-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-54-213-211-21-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-54-213-211-21-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-54-186-88-199-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-54-186-88-199-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
+  - match:
+    - port: 443
+      sni_hosts:
+      - sg-us-west-2-34-223-233-242-prod-us-west-2-oregon.live.ruxit.com
+    route:
+    - destination:
+        host: sg-us-west-2-34-223-233-242-prod-us-west-2-oregon.live.ruxit.com
+        port:
+          number: 443
+          name: HTTPS
