@@ -49,9 +49,9 @@ pipeline {
             steps {
                 container('kubectl') {
                     sh "cat istio/virtual_service_50v1_50v2.yml"
-                    sh "kubectl describe virtualservices sockshop"
-                    sh "kubectl apply -f istio/virtual_service_50v1_50v2.yml -n production"
-                    sh "kubectl describe virtualservices sockshop"
+                    sh "kubectl describe virtualservices sockshop -n default"
+                    sh "kubectl apply -f istio/virtual_service_50v1_50v2.yml -n default"
+                    sh "kubectl describe virtualservices sockshop -n default"
                 }
             }
         }
