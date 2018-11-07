@@ -33,8 +33,8 @@ pipeline {
             steps {
                 container('kubectl') {
                     // update images
-                    sh "sed -i "s~weight: .* #v1~weight: ${env.VERSION1} #v1~" virtual_service_50v1_50v2.yml"
-                    sh "sed -i "s~weight: .* #v2~weight: ${env.VERSION2} #v2~" virtual_service_50v1_50v2.yml"
+                    sh "sed -i \"s~weight: .* #v1~weight: ${env.VERSION1} #v1~\" virtual_service_50v1_50v2.yml"
+                    sh "sed -i \"s~weight: .* #v2~weight: ${env.VERSION2} #v2~\" virtual_service_50v1_50v2.yml"
 
                 }
             }
