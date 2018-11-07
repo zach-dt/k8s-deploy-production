@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: payment
+  name: payment-v1
   namespace: production
 spec:
   replicas: 1

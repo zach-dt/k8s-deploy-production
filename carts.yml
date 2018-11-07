@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: carts
+  name: carts-v1
   namespace: production
 spec:
   replicas: 1
