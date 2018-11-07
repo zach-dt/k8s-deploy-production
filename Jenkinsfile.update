@@ -16,6 +16,7 @@ pipeline {
             }
             steps {
                 container('git') {
+                    sh "rm -rf k8s-deploy-production"
                     sh "git clone https://github.com/${env.GITHUB_ORGANIZATION}/k8s-deploy-production ."
                 }
             }
