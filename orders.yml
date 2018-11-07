@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: orders
+  name: orders-v1
   namespace: production
 spec:
   replicas: 1

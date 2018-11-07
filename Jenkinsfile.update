@@ -7,6 +7,7 @@ pipeline {
         label 'kubegit'
     }
     stages {
+        /*
         stage('Checkout project') {
             when {
                 beforeAgent true
@@ -20,6 +21,7 @@ pipeline {
                 }
             }
         }
+        */
         stage('Update yml files') {
             when {
                 beforeAgent true
