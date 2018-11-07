@@ -3,12 +3,6 @@ pipeline {
     label 'kubegit'
   }
   stages {
-    /*
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }*/
     stage('Update production versions with latest versions from staging') {
       steps {
         container('kubectl') {
