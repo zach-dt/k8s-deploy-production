@@ -1,0 +1,57 @@
+pipeline {
+    parameters {
+
+        string(name: 'VERSION1', description: 'Percentage of traffic to be routed to version 1', trim: true)
+        string(name: 'VERSION2', description: 'Percentage of traffic to be routed to version 2', trim: true)
+    }
+    agent {
+        label 'kubegit'
+    }
+    stages {
+      /*
+        stage('Checkout project') {
+            when {
+                beforeAgent true
+                expression {
+                    return (env.VERSION1 != "" && env.VERSION2 != "")
+                }
+            }
+            steps {
+                container('git') {
+                    sh "git clone https://github.com/${env.GITHUB_ORGANIZATION}/k8s-deploy-production ."
+                }
+            }
+        }
+        */
+        stage('Update yml files') {
+            when {
+                beforeAgent true
+                expression {
+                    return (env.VERSION1 != "" && env.VERSION2 != "")
+                }
+            }
+            steps {
+                container('kubectl') {
+                    // update images
+                    sh "sed -i "s~weight: .* #v1~weight: ${env.VERSION1} #v1~" virtual_service_50v1_50v2.yml"
+                    sh "sed -i "s~weight: .* #v2~weight: ${env.VERSION2} #v2~" virtual_service_50v1_50v2.yml"
+
+                }
+            }
+        }
+        stage('Deploy updated yml') {
+            when {
+                beforeAgent true
+                expression {
+                    return (env.VERSION1 != "" && env.VERSION2 != "")
+                }
+            }
+            steps {
+                container('kubectl') {
+                    sh "cat virtual_service_50v1_50v2.yml"
+                    sh "kubectl apply -f virtual_service_50v1_50v2.yml"
+                }
+            }
+        }
+    }
+}
