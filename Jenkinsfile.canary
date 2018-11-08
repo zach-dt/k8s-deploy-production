@@ -55,5 +55,13 @@ pipeline {
                 }
             }
         }
+        stage('Update configuration change') {
+            steps {
+                 container("curl") {
+                    sh "curl -X POST \"$DT_TENANT_URL/api/v1/events?Api-Token=$DT_API_TOKEN\" -H \"accept: application/json\" -H \"Content-Type: application/json\" -d \"{ \\\"eventType\\\": \\\"CUSTOM_CONFIGURATION\\\", \\\"attachRules\\\": { \\\"tagRule\\\" : [{ \\\"meTypes\\\" : [\\\"SERVICE\\\"], \\\"tags\\\" : [ { \\\"context\\\" : \\\"CONTEXTLESS\\\", \\\"key\\\" : \\\"app\\\", \\\"value\\\" : \\\"front-end\\\" }, { \\\"context\\\" : \\\"CONTEXTLESS\\\", \\\"key\\\" : \\\"environment\\\", \\\"value\\\" : \\\"dev\\\" } ] }] }, \\\"description\\\":\\\"load balancing: v1 0pc , v2 100pc\\\", \\\"source\\\":\\\"Jenkins\\\", \\\"configuration\\\":\\\"load balancer\\\", \\\"customProperties\\\": { \\\"remediationAction\\\": \\\"https://mycoolselfhealing.com\\\" } }\" "
+                    // sh "curl -X POST "https://tno85405.live.dynatrace.com/api/v1/events?Api-Token=xwE1XvucQ4ObUHzGQlGBg" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"eventType\": \"CUSTOM_CONFIGURATION\", \"attachRules\": { \"tagRule\" : [{ \"meTypes\" : [\"SERVICE\"], \"tags\" : [ { \"context\" : \"CONTEXTLESS\", \"key\" : \"app\", \"value\" : \"front-end\" }, { \"context\" : \"CONTEXTLESS\", \"key\" : \"environment\", \"value\" : \"dev\" } ] }] }, \"description\":\"load balancing: v1 0 %, v2 100 %\", \"source\":\"Jenkins\", \"configuration\":\"load balancer\", \"customProperties\": { \"remediationAction\": \"https://mycoolselfhealing.com\" } }" "
+              }
+            }
+        }
     }
 }
