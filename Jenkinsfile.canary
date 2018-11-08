@@ -1,6 +1,5 @@
 pipeline {
     parameters {
-
         string(name: 'VERSION1', description: 'Percentage of traffic to be routed to version 1', trim: true)
         string(name: 'VERSION2', description: 'Percentage of traffic to be routed to version 2', trim: true)
         string(name: 'REMEDIATIONURL', description: 'Remediation script to call if canary release fails', trim: true)

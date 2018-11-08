@@ -31,6 +31,7 @@ pipeline {
             }
             steps {
                 container('kubectl') {
+                    // copy original service description to a temporary one.
                     sh "cp ${env.SERVICE}.yml ${env.SERVICE}-${env.VERSION}.yml"
                     // update images
                     sh "sed -i \"s#image: .*#image: `kubectl -n staging get deployment -o jsonpath='{.items[*].spec.template.spec.containers[0].image}' --field-selector=metadata.name=${env.SERVICE}`#\" ${env.SERVICE}-${env.VERSION}.yml"
@@ -50,7 +51,7 @@ pipeline {
             }
             steps {
                 container('kubectl') {
-                    sh "cat ${env.SERVICE}-${env.VERSION}.yml"
+                    // sh "cat ${env.SERVICE}-${env.VERSION}.yml"
                     sh "kubectl apply -f ${env.SERVICE}-${env.VERSION}.yml"
                 }
             }
