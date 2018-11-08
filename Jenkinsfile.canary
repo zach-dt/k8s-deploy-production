@@ -34,8 +34,8 @@ pipeline {
             steps {
                 container('kubectl') {
                     // update images
-                    sh "sed -i \"s~weight: .* #v1~weight: ${env.VERSION1} #v1~\" istio/virtual_service_50v1_50v2.yml"
-                    sh "sed -i \"s~weight: .* #v2~weight: ${env.VERSION2} #v2~\" istio/virtual_service_50v1_50v2.yml"
+                    sh "sed -i \"s~weight: .* #v1~weight: ${env.VERSION1} #v1~\" istio/virtual_service_canary.yml"
+                    sh "sed -i \"s~weight: .* #v2~weight: ${env.VERSION2} #v2~\" istio/virtual_service_canary.yml"
 
                 }
             }
@@ -49,9 +49,9 @@ pipeline {
             }
             steps {
                 container('kubectl') {
-                    sh "cat istio/virtual_service_50v1_50v2.yml"
+                    sh "cat istio/virtual_service_canary.yml"
                     // sh "kubectl describe virtualservices sockshop -n default"
-                    sh "kubectl apply -f istio/virtual_service_50v1_50v2.yml -n default"
+                    sh "kubectl apply -f istio/virtual_service_canary.yml -n default"
                     sh "kubectl describe virtualservices sockshop -n default"
                 }
             }
