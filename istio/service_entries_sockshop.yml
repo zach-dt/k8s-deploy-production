@@ -16,7 +16,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
-  name: carts-db
+  name: carts-and-orders-db
 spec:
   hosts:
   - "*.mongodb.net"
@@ -29,21 +29,3 @@ spec:
     name: tcp
     protocol: TCP
   location: MESH_EXTERNAL
----
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: orders-db
-spec:
-  hosts:
-  - "*.mongodb.net"
-  addresses:
-  - 18.214.93.113
-  - 18.215.19.51
-  - 54.82.134.106
-  ports:
-  - number: 27017
-    name: tcp
-    protocol: TCP
-  location: MESH_EXTERNAL
----
