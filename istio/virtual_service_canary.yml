@@ -8,6 +8,12 @@ spec:
   gateways:
   - sockshop-gateway
   http:
+  - match:
+    - uri:
+        prefix: "/carts"
+    route:
+    - destination:
+        host: carts.production.svc.cluster.local
   - route:
     - destination:
         host: front-end.production.svc.cluster.local
