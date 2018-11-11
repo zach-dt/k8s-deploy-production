@@ -8,21 +8,6 @@ pipeline {
         label 'kubegit'
     }
     stages {
-      /*
-        stage('Checkout project') {
-            when {
-                beforeAgent true
-                expression {
-                    return (env.VERSION1 != "" && env.VERSION2 != "")
-                }
-            }
-            steps {
-                container('git') {
-                    sh "git clone https://github.com/${env.GITHUB_ORGANIZATION}/k8s-deploy-production ."
-                }
-            }
-        }
-        */
         stage('Update yml files') {
             when {
                 beforeAgent true
