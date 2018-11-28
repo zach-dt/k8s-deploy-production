@@ -19,24 +19,6 @@ pipeline {
       }
     }
     stage('DT Deploy Event') {
-      /*
-      steps {
-        createDynatraceDeploymentEvent(
-          envId: 'Dynatrace Tenant',
-          tagMatchRules: [
-            [
-              meTypes: [
-                [meType: 'SERVICE']
-              ],
-              tags: [
-                [context: 'CONTEXTLESS', key: 'environment', value: 'production']
-              ]
-            ]
-          ]) 
-        {
-        }
-      }
-      */
       steps {
           container("curl") {
             // send custom deployment event to Dynatrace
