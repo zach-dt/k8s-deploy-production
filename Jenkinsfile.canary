@@ -1,3 +1,17 @@
+@Library('dynatrace@master') _
+
+def tagMatchRules = [
+  [
+    meTypes: [
+      [meType: 'SERVICE']
+    ],
+    tags : [
+      [context: 'CONTEXTLESS', key: 'app', value: 'front-end'],
+      [context: 'CONTEXTLESS', key: 'environment', value: 'production']
+    ]
+  ]
+]
+
 pipeline {
   parameters {
     string(name: 'VERSION1', description: 'Percentage of traffic to be routed to version 1', trim: true)
@@ -40,9 +54,24 @@ pipeline {
     stage('Update configuration change') {
       steps {
         container("curl") {
+          script {
+            def status = pushDynatraceConfigurationEvent (
+              tagRule : tagMatchRules,
+              description : "Load balancing changed to: v1 ${env.VERSION1} % ; v2 ${env.VERSION2} %",
+              source : "Jenkins",
+              configuration : "Load Balancer",
+              remediationAction : "${env.REMEDIATIONURL}"
+            )
+          }
+        }
+      }
+      /*
+      steps {
+        container("curl") {
           sh "curl -X POST \"$DT_TENANT_URL/api/v1/events?Api-Token=$DT_API_TOKEN\" -H \"accept: application/json\" -H \"Content-Type: application/json\" -d \"{ \\\"eventType\\\": \\\"CUSTOM_CONFIGURATION\\\", \\\"attachRules\\\": { \\\"tagRule\\\" : [{ \\\"meTypes\\\" : [\\\"SERVICE\\\"], \\\"tags\\\" : [ { \\\"context\\\" : \\\"CONTEXTLESS\\\", \\\"key\\\" : \\\"app\\\", \\\"value\\\" : \\\"front-end\\\" }, { \\\"context\\\" : \\\"CONTEXTLESS\\\", \\\"key\\\" : \\\"environment\\\", \\\"value\\\" : \\\"production\\\" } ] }] }, \\\"description\\\":\\\"load balancing changed to: v1 ${env.VERSION1} % ; v2 ${env.VERSION2} %\\\", \\\"source\\\":\\\"Jenkins\\\", \\\"configuration\\\":\\\"load balancer\\\", \\\"customProperties\\\": { \\\"remediationAction\\\": \\\"${env.REMEDIATIONURL}\\\" } }\" "
         }
       }
+      */
     }
   }
 }
