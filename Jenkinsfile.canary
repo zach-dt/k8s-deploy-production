@@ -17,10 +17,8 @@ pipeline {
             }
             steps {
                 container('kubectl') {
-                    // update images
                     sh "sed -i \"s~weight: .* #v1~weight: ${env.VERSION1} #v1~\" istio/virtual_service_canary.yml"
                     sh "sed -i \"s~weight: .* #v2~weight: ${env.VERSION2} #v2~\" istio/virtual_service_canary.yml"
-
                 }
             }
         }
@@ -34,7 +32,6 @@ pipeline {
             steps {
                 container('kubectl') {
                     sh "cat istio/virtual_service_canary.yml"
-                    // sh "kubectl describe virtualservices sockshop -n default"
                     sh "kubectl apply -f istio/virtual_service_canary.yml -n default"
                     sh "kubectl describe virtualservices sockshop -n default"
                 }
@@ -43,7 +40,6 @@ pipeline {
         stage('Update configuration change') {
             steps {
                  container("curl") {
-                    // send custom configuration event to Dynatrace
                     sh "curl -X POST \"$DT_TENANT_URL/api/v1/events?Api-Token=$DT_API_TOKEN\" -H \"accept: application/json\" -H \"Content-Type: application/json\" -d \"{ \\\"eventType\\\": \\\"CUSTOM_CONFIGURATION\\\", \\\"attachRules\\\": { \\\"tagRule\\\" : [{ \\\"meTypes\\\" : [\\\"SERVICE\\\"], \\\"tags\\\" : [ { \\\"context\\\" : \\\"CONTEXTLESS\\\", \\\"key\\\" : \\\"app\\\", \\\"value\\\" : \\\"front-end\\\" }, { \\\"context\\\" : \\\"CONTEXTLESS\\\", \\\"key\\\" : \\\"environment\\\", \\\"value\\\" : \\\"production\\\" } ] }] }, \\\"description\\\":\\\"load balancing changed to: v1 ${env.VERSION1} % ; v2 ${env.VERSION2} %\\\", \\\"source\\\":\\\"Jenkins\\\", \\\"configuration\\\":\\\"load balancer\\\", \\\"customProperties\\\": { \\\"remediationAction\\\": \\\"${env.REMEDIATIONURL}\\\" } }\" "
                 }
             }
