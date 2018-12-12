@@ -60,7 +60,9 @@ pipeline {
               description : "Load balancing changed to: v1 ${env.VERSION1} % ; v2 ${env.VERSION2} %",
               source : "Jenkins",
               configuration : "Load Balancer",
-              remediationAction : "${env.REMEDIATIONURL}"
+              customProperties : [
+                [key: 'remediationAction', value: "${env.REMEDIATIONURL}"]
+              ]
             )
           }
         }
