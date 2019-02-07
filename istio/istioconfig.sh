@@ -45,7 +45,8 @@ metadata:
 spec:
   hosts:
   - $TENANT"  > service_entry_oneagent.yml
-  
+
+sed -i 's~/communication~~' ./commpts.txt
 sed -i '/\[/d' ./commpts.txt
 sed -i '/\]/d' ./commpts.txt
 sed -i 's/\"//g' ./commpts.txt
