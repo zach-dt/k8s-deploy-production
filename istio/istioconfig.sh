@@ -52,6 +52,7 @@ sed -i 's/\"//g' ./commpts.txt
 sed -i 's/ //g' ./commpts.txt
 sed -i 's/https:\/\///g' ./commpts.txt
 sed -i 's/,//g' ./commpts.txt
+sed -i 's/\/communication//g' ./commpts.txt
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
     echo "  - $line" >> service_entry_oneagent.yml
