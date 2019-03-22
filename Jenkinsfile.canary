@@ -27,7 +27,7 @@ pipeline {
       when {
         beforeAgent true
         expression {
-          return (env.VERSION1 != "" && env.VERSION2 != "")
+          return (env.VERSION1 != "" && env.VERSION2 != "" && env.VERSION3 != "")
         }
       }
       steps {
@@ -42,7 +42,7 @@ pipeline {
       when {
         beforeAgent true
         expression {
-          return (env.VERSION1 != "" && env.VERSION2 != "")
+          return (env.VERSION1 != "" && env.VERSION2 != "" && env.VERSION3 != "")
         }
       }
       steps {
