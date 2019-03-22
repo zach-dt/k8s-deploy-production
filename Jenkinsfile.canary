@@ -16,6 +16,7 @@ pipeline {
   parameters {
     string(name: 'VERSION1', description: 'Percentage of traffic to be routed to version 1', trim: true)
     string(name: 'VERSION2', description: 'Percentage of traffic to be routed to version 2', trim: true)
+    string(name: 'VERSION3', description: 'Percentage of traffic to be routed to version 3', trim: true)
     string(name: 'REMEDIATIONURL', description: 'Remediation script to call if canary release fails', trim: true)
   }
   agent {
@@ -33,6 +34,7 @@ pipeline {
         container('kubectl') {
           sh "sed -i \"s~weight: .* #v1~weight: ${env.VERSION1} #v1~\" istio/virtual_service_canary.yml"
           sh "sed -i \"s~weight: .* #v2~weight: ${env.VERSION2} #v2~\" istio/virtual_service_canary.yml"
+          sh "sed -i \"s~weight: .* #v3~weight: ${env.VERSION3} #v3~\" istio/virtual_service_canary.yml"
         }
       }
     }
@@ -57,7 +59,7 @@ pipeline {
           script {
             def status = pushDynatraceConfigurationEvent (
               tagRule : tagMatchRules,
-              description : "Load balancing changed to: v1 ${env.VERSION1} % ; v2 ${env.VERSION2} %",
+              description : "Load balancing changed to: v1 ${env.VERSION1} % ; v2 ${env.VERSION2} % ; v3 ${env.VERSION3} ;",
               source : "Jenkins",
               configuration : "Load Balancer",
               customProperties : [
